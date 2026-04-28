@@ -3,10 +3,9 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>D&D 5e Быстрая справка</title>
+    <title>D&D 5e Справочник</title>
     <link rel="stylesheet" type="text/css" href="css/style.css">
     <link rel="stylesheet" type="text/css" href="css/quickref.css">
-    <link rel="icon" type="image/png" href="img/favicon.png">
 </head>
 <body class="is-pc">
     <div id="left-menu" class="menu"></div>
@@ -27,16 +26,14 @@
     <script src="js/data_condition.js"></script>
     <script src="js/data_environment.js"></script>
     <script src="js/quickref.js"></script>
+
     <script>
+        // Команда на запуск
         $(document).ready(function () {
-            // Ждем чуть-чуть, чтобы всё точно загрузилось
-            setTimeout(function() {
-                if (typeof init_quickref === "function") {
-                    init_quickref();
-                } else {
-                    console.log("Справочник всё еще грузится...");
-                }
-            }, 100);
+            if (typeof init_quickref === "function") {
+                init_quickref();
+                console.log("Справочник запущен!");
+            }
         });
     </script>
 </body>
