@@ -4,9 +4,9 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>D&D 5e Быстрая справка</title>
-    <link rel="stylesheet" type="text/css" href="css/style.css">
-    <link rel="stylesheet" type="text/css" href="css/quickref.css">
-    <link rel="icon" type="image/png" href="img/favicon.png">
+    <link rel="stylesheet" type="text/css" href="./css/style.css">
+    <link rel="stylesheet" type="text/css" href="./css/quickref.css">
+    <link rel="icon" type="image/png" href="./img/favicon.png">
 </head>
 <body class="is-pc">
     <div id="left-menu" class="menu"></div>
@@ -18,17 +18,17 @@
         </div>
     </div>
 
-    <script src="js/jquery.min.js"></script>
-    <script src="js/data_action.js"></script>
-    <script src="js/data_bonusaction.js"></script>
-    <script src="js/data_reaction.js"></script>
-    <script src="js/data_movement.js"></script>
-    <script src="js/data_condition.js"></script>
-    <script src="js/data_environment.js"></script>
-    <script src="js/quickref.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    
+    <script src="./js/data_action.js"></script>
+    <script src="./js/data_bonusaction.js"></script>
+    <script src="./js/data_reaction.js"></script>
+    <script src="./js/data_movement.js"></script>
+    <script src="./js/data_condition.js"></script>
+    <script src="./js/data_environment.js"></script>
+    <script src="./js/quickref.js"></script>
     <script>
         $(document).ready(function () {
-            // Инициализация при загрузке
             if (typeof init_quickref === "function") {
                 init_quickref();
             }
