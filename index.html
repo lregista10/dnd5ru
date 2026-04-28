@@ -1,31 +1,101 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>D&D 5e Quick Reference</title>
-    <link rel="stylesheet" type="text/css" href="css/style.css">
-    <link rel="stylesheet" type="text/css" href="css/quickref.css">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>D&D 5e Быстрая справка (PHB)</title>
+    <style>
+        :root {
+            --bg: #121212; --card-bg: #1e1e1e; --text: #e0e0e0;
+            --action: #d32f2f; --bonus: #1976d2; --reaction: #fbc02d; --movement: #388e3c;
+        }
+        body { font-family: 'Segoe UI', sans-serif; background: var(--bg); color: var(--text); margin: 0; display: flex; flex-direction: column; align-items: center; }
+        .header { background: #000; width: 100%; padding: 15px 0; display: flex; justify-content: center; gap: 15px; position: sticky; top: 0; z-index: 100; box-shadow: 0 4px 10px rgba(0,0,0,0.5); }
+        .filter-btn { cursor: pointer; width: 50px; height: 50px; border-radius: 50%; border: 2px solid transparent; background: #333; display: flex; align-items: center; justify-content: center; font-size: 24px; transition: 0.2s; opacity: 0.4; }
+        .filter-btn.active { opacity: 1; border-color: #fff; }
+        .filter-btn[data-type="action"].active { background: var(--action); }
+        .filter-btn[data-type="bonus"].active { background: var(--bonus); }
+        .filter-btn[data-type="reaction"].active { background: var(--reaction); }
+        .filter-btn[data-type="movement"].active { background: var(--movement); }
+        .container { padding: 20px; max-width: 1200px; width: 100%; }
+        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 10px; }
+        .card { background: var(--card-bg); border-radius: 4px; padding: 15px; text-align: center; cursor: pointer; transition: 0.1s; border-bottom: 5px solid #333; min-height: 50px; display: flex; align-items: center; justify-content: center; font-weight: 600; font-size: 0.9em; }
+        .card:hover { transform: scale(1.03); filter: brightness(1.2); }
+        .card.action { border-color: var(--action); }
+        .card.bonus { border-color: var(--bonus); }
+        .card.reaction { border-color: var(--reaction); }
+        .card.movement { border-color: var(--movement); }
+        .card.hidden { display: none; }
+        #modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); z-index: 1000; }
+        #modal { display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: #1e1e1e; border-radius: 8px; width: 90%; max-width: 600px; z-index: 1100; border: 1px solid #444; overflow: hidden; }
+        .m-header { padding: 20px; background: #252525; border-bottom: 1px solid #333; }
+        .m-header h2 { margin: 0; font-size: 1.4em; }
+        .m-header span { font-size: 0.8em; color: #888; text-transform: uppercase; }
+        .m-body { padding: 25px; line-height: 1.6; color: #ccc; max-height: 60vh; overflow-y: auto; }
+        .m-body b { color: #fff; }
+        .m-footer { padding: 15px; background: #252525; text-align: right; }
+        .close-btn { background: #d32f2f; color: #fff; border: none; padding: 10px 20px; border-radius: 4px; cursor: pointer; font-weight: bold; }
+    </style>
 </head>
-<body class="is-pc">
-    <div id="left-menu" class="menu"></div>
-    <div id="content" class="container">
-        <div id="quickref"></div>
+<body>
+
+<div class="header">
+    <button class="filter-btn active" data-type="action">⚔️</button>
+    <button class="filter-btn active" data-type="bonus">⚡</button>
+    <button class="filter-btn active" data-type="reaction">↪️</button>
+    <button class="filter-btn active" data-type="movement">🏃</button>
+</div>
+
+<div class="container">
+    <div class="grid">
+        <div class="card action" data-title="Атака" data-sub="1 Действие" data-desc="Вы совершаете атаку ближним или дальним оружием. Бросок: <b>1к20 + модификатор характеристики + бонус мастерства</b>. При попадании бросайте кости урона.">Атака</div>
+        <div class="card action" data-title="Рывок" data-sub="1 Действие" data-desc="Вы получаете дополнительное перемещение на текущий ход, равное вашей скорости.">Рывок</div>
+        <div class="card action" data-title="Отход" data-sub="1 Действие" data-desc="Ваше перемещение не провоцирует атаки до конца текущего хода.">Отход</div>
+        <div class="card action" data-title="Уклонение" data-sub="1 Действие" data-desc="Броски атак по вам совершаются с <b>помехой</b>, а вы совершаете проверки Ловкости с <b>преимуществом</b>.">Уклонение</div>
+        <div class="card action" data-title="Помощь" data-sub="1 Действие" data-desc="Существо, которому вы помогаете, получает <b>преимущество</b> на следующую проверку или атаку.">Помощь</div>
+        <div class="card action" data-title="Засада" data-sub="1 Действие" data-desc="Сделайте проверку Ловкости (Скрытность), чтобы спрятаться.">Засада</div>
+        <div class="card action" data-title="Подготовка" data-sub="1 Действие" data-desc="Выберите условие и действие. Если условие выполнится, вы можете использовать реакцию.">Подготовка</div>
+        <div class="card action" data-title="Заклинание" data-sub="1 Действие" data-desc="Накладывание заклинания со временем наложения '1 действие'.">Заклинание</div>
+
+        <div class="card bonus" data-title="Вторая рука" data-sub="1 Бонус" data-desc="Атака вторым легким оружием. Модификатор к урону не добавляется.">Вторая рука</div>
+        <div class="card bonus" data-title="Заклинание" data-sub="1 Бонус" data-desc="Если вы наложили заклинание бонусным действием, основное действие может быть только заговором.">Заклинание</div>
+
+        <div class="card reaction" data-title="Атака при отходе" data-sub="1 Реакция" data-desc="Атака по существу, выходящему из вашей зоны досягаемости.">Атака при отходе</div>
+        <div class="card reaction" data-title="Заготовка" data-sub="1 Реакция" data-desc="Выполнение действия по условию 'Подготовки'.">Заготовка</div>
+
+        <div class="card movement" data-title="Встать" data-sub="Движение" data-desc="Вставание из положения лежа стоит <b>половину</b> вашей скорости.">Встать</div>
+        <div class="card movement" data-title="Трудная местность" data-sub="Движение" data-desc="Каждый фут движения стоит 2 фута скорости.">Трудная местность</div>
     </div>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="js/data_action.js"></script>
-    <script src="js/data_bonusaction.js"></script>
-    <script src="js/data_reaction.js"></script>
-    <script src="js/data_movement.js"></script>
-    <script src="js/data_condition.js"></script>
-    <script src="js/data_environment.js"></script>
-    <script src="js/quickref.js"></script>
-    <script>
-        $(document).ready(function () {
-            if (typeof init_quickref === "function") {
-                init_quickref();
-            }
-        });
-    </script>
+</div>
+
+<div id="modal-overlay"></div>
+<div id="modal">
+    <div class="m-header"><span id="m-sub"></span><h2 id="m-title"></h2></div>
+    <div class="m-body" id="m-desc"></div>
+    <div class="m-footer"><button class="close-btn" onclick="closeModal()">ЗАКРЫТЬ</button></div>
+</div>
+
+<script>
+    document.querySelectorAll('.filter-btn').forEach(btn => {
+        btn.onclick = () => {
+            btn.classList.toggle('active');
+            const type = btn.getAttribute('data-type');
+            document.querySelectorAll(`.card.${type}`).forEach(c => c.classList.toggle('hidden'));
+        };
+    });
+    const overlay = document.getElementById('modal-overlay');
+    const modal = document.getElementById('modal');
+    document.querySelectorAll('.card').forEach(card => {
+        card.onclick = () => {
+            modal.style.borderTop = `8px solid ${window.getComputedStyle(card).borderColor}`;
+            document.getElementById('m-title').innerText = card.dataset.title;
+            document.getElementById('m-sub').innerText = card.dataset.sub;
+            document.getElementById('m-desc').innerHTML = card.dataset.desc;
+            overlay.style.display = 'block'; modal.style.display = 'block';
+        };
+    });
+    function closeModal() { overlay.style.display = 'none'; modal.style.display = 'none'; }
+    overlay.onclick = closeModal;
+</script>
 </body>
 </html>
