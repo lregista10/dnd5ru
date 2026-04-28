@@ -3,22 +3,16 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>D&D 5e Справочник</title>
+    <title>D&D 5e Quick Reference</title>
     <link rel="stylesheet" type="text/css" href="css/style.css">
     <link rel="stylesheet" type="text/css" href="css/quickref.css">
 </head>
 <body class="is-pc">
     <div id="left-menu" class="menu"></div>
     <div id="content" class="container">
-        <div class="row">
-            <div class="col-xs-12">
-                <div id="quickref"></div>
-            </div>
-        </div>
+        <div id="quickref"></div>
     </div>
-
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    
     <script src="js/data_action.js"></script>
     <script src="js/data_bonusaction.js"></script>
     <script src="js/data_reaction.js"></script>
@@ -26,13 +20,10 @@
     <script src="js/data_condition.js"></script>
     <script src="js/data_environment.js"></script>
     <script src="js/quickref.js"></script>
-
     <script>
-        // Команда на запуск
         $(document).ready(function () {
             if (typeof init_quickref === "function") {
                 init_quickref();
-                console.log("Справочник запущен!");
             }
         });
     </script>
