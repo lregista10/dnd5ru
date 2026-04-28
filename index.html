@@ -1,101 +1,38 @@
 <!DOCTYPE html>
-<!-- ------------------------------------------------------------------ -->
-<!--           <quickref-item> template                                 -->
-<!-- ------------------------------------------------------------------ -->
-<template id="quickref-item">
-    <style>
-        :host {
-            width: 32%;
-            margin-bottom: 2mm;
-            float: left;
-            display: flex;
-        }
-
-        #icon {
-            float: left;
-            width: 8mm;
-            height: 8mm;
-            background-repeat: no-repeat;
-            background-size: contain;
-            box-sizing: border-box;
-            border-radius: 1mm;
-            display: inline-block;
-            margin-right: 1mm;
-        }
-
-        #content {
-            flex: 1;
-            height: 8mm;
-            vertical-align: top;
-            display: inline-block;
-            font-size: inherit;
-        }
-
-        #title {
-            font-weight: bold;
-        }
-
-        #text {
-            font-style: italic;
-            font-size: inherit;
-        }
-
-        #text-container {
-            padding-right: 1mm;
-            font-size: inherit;
-        }
-    </style>
-
-    <div id="content">
-        <div id="icon" class="icon"></div>
-        <div id="text-container" class="text">
-            <span id="title"></span>
-            <span id="text"></span>
+<html lang="ru">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>D&D 5e Быстрая справка</title>
+    <link rel="stylesheet" type="text/css" href="css/style.css">
+    <link rel="stylesheet" type="text/css" href="css/quickref.css">
+    <link rel="icon" type="image/png" href="img/favicon.png">
+</head>
+<body class="is-pc">
+    <div id="left-menu" class="menu"></div>
+    <div id="content" class="container">
+        <div class="row">
+            <div class="col-xs-12">
+                <div id="quickref"></div>
+            </div>
         </div>
     </div>
 
-</template>
-
-<script>
-        (function (window, document) {
-            var elemName = 'quickref-item';
-            var thatDoc = document;
-            var thisDoc = (thatDoc.currentScript || thatDoc._currentScript).ownerDocument;
-
-            var proto = Object.create(HTMLElement.prototype, {
-                createdCallback: {
-                    value: function () {
-                        var template = thisDoc.getElementById(elemName);
-                        var clone = thatDoc.importNode(template.content, true);
-                        var root = this.createShadowRoot().appendChild(clone);
-                    }
-                },
-                attachedCallback: {
-                    value: function () {
-                        var root = this.shadowRoot;
-                        var icon = root.getElementById("icon");
-                        var title = root.getElementById("title");
-                        var text = root.getElementById("text");
-
-                        for (var i = 0; i < this.attributes.length; i++) {
-                            var attribute = this.attributes[i];
-                            var name = attribute.name;
-                            var value = attribute.value;
-                            switch (name) {
-                                case "data-icon":   icon.className += " icon-" + value; break;
-                                case "data-title":  title.innerHTML = value; break;
-                                case "data-text":   text.innerHTML = value.replace("|","<br />"); break;
-                            }
-
-                        }
-
-                    }
-                }
-            });
-            thatDoc.registerElement(elemName, { prototype: proto });
-        })(window, document);
-</script>
-<!-- ------------------------------------------------------------------ -->
-<!--           end of template                                          -->
-<!-- ------------------------------------------------------------------ -->
-<link rel="canonical" href="https://5e.ruleplaying.com/" />
+    <script src="js/jquery.min.js"></script>
+    <script src="js/data_action.js"></script>
+    <script src="js/data_bonusaction.js"></script>
+    <script src="js/data_reaction.js"></script>
+    <script src="js/data_movement.js"></script>
+    <script src="js/data_condition.js"></script>
+    <script src="js/data_environment.js"></script>
+    <script src="js/quickref.js"></script>
+    <script>
+        $(document).ready(function () {
+            // Инициализация при загрузке
+            if (typeof init_quickref === "function") {
+                init_quickref();
+            }
+        });
+    </script>
+</body>
+</html>
